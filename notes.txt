@@ -1,0 +1,9 @@
+RAG stands for Retrieval Augmented Generation.
+
+Vector databases store embeddings.
+
+Embeddings are numerical representations of text.
+
+Chroma is a vector database.
+
+LLMs generate text based on prompts.
