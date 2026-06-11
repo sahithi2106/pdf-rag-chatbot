@@ -5,9 +5,7 @@ import google.generativeai as genai
 from dotenv import load_dotenv
 import os
 
-# =========================
-# LOAD API KEY
-# =========================
+
 
 load_dotenv()
 
@@ -18,9 +16,7 @@ if not api_key:
 
 genai.configure(api_key=api_key)
 
-# =========================
-# LOAD PDF
-# =========================
+
 
 print("Loading PDF...")
 
@@ -37,9 +33,7 @@ for page in reader.pages:
 print("PDF Loaded Successfully!")
 print("Characters Extracted:", len(text))
 
-# =========================
-# CHUNK TEXT
-# =========================
+
 
 chunk_size = 300
 
@@ -50,9 +44,7 @@ chunks = [
 
 print("Total Chunks:", len(chunks))
 
-# =========================
-# LOAD EMBEDDING MODEL
-# =========================
+
 
 print("Loading Embedding Model...")
 
@@ -60,9 +52,6 @@ model = SentenceTransformer("all-MiniLM-L6-v2")
 
 print("Model Loaded!")
 
-# =========================
-# CREATE EMBEDDINGS
-# =========================
 
 print("Creating Embeddings...")
 
@@ -70,9 +59,7 @@ embeddings = model.encode(chunks)
 
 print("Embeddings Created!")
 
-# =========================
-# CREATE CHROMADB
-# =========================
+
 
 client = chromadb.Client()
 
@@ -83,9 +70,7 @@ except:
 
 collection = client.create_collection("resume")
 
-# =========================
-# STORE CHUNKS
-# =========================
+
 
 for i, chunk in enumerate(chunks):
     collection.add(
@@ -96,15 +81,11 @@ for i, chunk in enumerate(chunks):
 
 print("Resume Indexed Successfully!")
 
-# =========================
-# ASK QUESTION
-# =========================
+
 
 question = input("\nAsk a question: ")
 
-# =========================
-# RETRIEVE RELEVANT CHUNKS
-# =========================
+
 
 query_embedding = model.encode(question)
 
@@ -114,10 +95,6 @@ results = collection.query(
 )
 
 context = "\n".join(results["documents"][0])
-
-# =========================
-# GEMINI
-# =========================
 
 model_gemini = genai.GenerativeModel("gemini-2.5-flash")
 
